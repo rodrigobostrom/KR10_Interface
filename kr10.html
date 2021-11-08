@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
+
 <head>
+
   <meta charset="utf-8" />
 
   <link rel="stylesheet" type="text/css" href="Css/main.css">
@@ -9,29 +11,66 @@
   <script type="text/javascript" src="http://static.robotwebtools.org/roslibjs/current/roslib.min.js"></script>
 
   <script type="text/javascript" src="Javascripts/Ros.js"></script>
-
+  <script type="text/javascript" src="Javascripts/PowerSource.js"></script>
+  <script type="text/javascript" src="Javascripts/RvizTable.js"></script>
 
 </head>
 
 <body onload="init()">
+  <div class="container">
 
-  <div class="header_container">
     <div class="header">
-        <div id="kr10_label">
-         <h1>KR10 R1420</h1> 
-        </div>
 
-        <div id="connection_state">
-          <input id='connected_image' type="image" src="img/Disconnected.png" onclick="connect();"/>
-        </div>
+      <div id="kr10_label">
+        <h1>KR10 R1420</h1>
+      </div>
+      <div id="connection_state">
+        <input id='connected_image' type="image" src="img/Disconnected.png" onclick="connect();" />
+      </div>
+
     </div>
-  </div>
+
+    <div class="sidenav">
+      <h1>Project Info</h1>
+    </div>
   
-  <div id="data">
-    <script>
-      subscribeHelloWorld();
-    </script>
+    <div class="sidenav">
+      <h1>Robot Visualization</h1>
+      <div id="robot_viz_container">
+        <!-- Tela onde aparecerá o RVIZ do robô -->
+      </div>
+      <button type="button" id="rviz_button" onclick="startRobotViz()"><h3>Start RVIZ</h3></button>
+    </div>
+
+    <div id="hello" class="data">
+
+      <h1>Joint States</h1>
+      <script>
+        //Teste com Hello World (talker.cpp)
+        subscribeHelloWorld();
+      </script>
+
+    </div>
+
+    <div class="data">
+
+      <h1>Power Sources Readings</h1>
+      <div id="robot_laser_table">
+        <table id="power_sources" cellpadding="2" border="1"> </table>
+      </div>
+      <script>
+        //Teste com Waam Interface (waam_interface.launch)
+        createTable();
+      </script>
+
+    </div>
+
+    <div class='footer'>
+      <h1>Footer</h1>
+    </div>
+
   </div>
 
 </body>
+
 </html>
