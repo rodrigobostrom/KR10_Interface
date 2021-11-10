@@ -20,14 +20,12 @@
   <div class="container">
 
     <div class="header">
-
       <div id="kr10_label">
         <h1>KR10 R1420</h1>
       </div>
       <div id="connection_state">
         <input id='connected_image' type="image" src="img/Disconnected.png" onclick="connect();" />
       </div>
-
     </div>
 
     <div class="sidenav">
@@ -54,13 +52,14 @@
 
     <div class="data">
 
-      <h1>Power Sources Readings</h1>
+      <h1>Power Sourcer Readings</h1>
       <div id="robot_laser_table">
-        <table id="power_sources" cellpadding="2" border="1"> </table>
+        <table id="power_sourcer" cellpadding="2" border="1"> </table>
       </div>
       <script>
-        //Teste com Waam Interface (waam_interface.launch)
+        createPowerSourcerSubscriber();
         createTable();
+        setInterval(updatePowerSubscriber, 300);
       </script>
 
     </div>
