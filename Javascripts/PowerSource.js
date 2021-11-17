@@ -17,39 +17,34 @@ class auxPowerInfo {
     setWireFeedSpeed(x) {
         this.wireFeedSpeed = x;
     }
-    getCurrent () {
+    getCurrent() {
         return this.current;
     }
-    getVoltage () {
+    getVoltage() {
         return this.voltage;
     }
-    getWireFeedSpeed () {
+    getWireFeedSpeed() {
         return this.wireFeedSpeed;
     }
 }
 
-function createPowerSourcerSubscriber(){
+var powerInfo = new auxPowerInfo(current, voltage, wireFeedSpeed);
 
-    var powerInfo = new auxPowerInfo(current, voltage, wireFeedSpeed);
+var listener = new ROSLIB.Topic({
+    ros : ros,
+    name : '/power_sourcer_readings',
+    messageType : 'kuka_rsi_hw_interface/PwrSrc'
+});
 
-    var listener = new ROSLIB.Topic({
-        ros : ros,
-        name : '/power_sourcer_readings',
-        messageType : 'kuka_rsi_hw_interface/PwrSrc'
-    });
+listener.subscribe(function (message){
+        powerInfo.setCurrent(message.current);
+        powerInfo.setVoltage(message.voltage);
+        powerInfo.setWireFeedSpeed(message.wire_feed_speed);
+});
 
-    listener.subscribe(function (message){
-            //console.log("Teste");
-            powerInfo.setCurrent(message.current);
-            powerInfo.setVoltage(message.voltage);
-            powerInfo.setWireFeedSpeed(message.wire_feed_speed);
-            console.log("Corrente: " + powerInfo.current + " Voltagem: " + powerInfo.voltage);
-    });
-}
+console.log("Corrente: " + powerInfo.current + " Voltagem: " + powerInfo.voltage);
 
-function createTable() {
-
-    var PowerInfo = new auxPowerInfo(current, voltage, wireFeedSpeed);
+function createPwrSrcTable() {
 
     var controlTable = document.getElementById("power_sourcer");
 
@@ -74,12 +69,12 @@ function createTable() {
 
                     switch (numberCollumns) {
                         case 0:
-                            var rowName = "Current (A)";
+                            var rowName = "Arc Current (A)";
                             NameCell.innerHTML = rowName.bold();
                             break;
                         case 1:
                             var auxPowerInfoFunc = powerInfo.getCurrent();
-                            ValueCell.innerHTML = auxPowerInfoFunc();
+                            ValueCell.innerHTML = auxPowerInfoFunc;
                             ValueCell.tabIndex = "1";
                             break;
                     }
@@ -91,12 +86,12 @@ function createTable() {
 
                     switch (numberCollumns) {
                         case 0:
-                            var rowName = "Voltage (V)";
+                            var rowName = "Arc Voltage (V)";
                             NameCell.innerHTML = rowName.bold();
                             break;
                         case 1:
                             var auxPowerInfoFunc = powerInfo.getCurrent();
-                            ValueCell.innerHTML = auxPowerInfoFunc();
+                            ValueCell.innerHTML = auxPowerInfoFunc;
                             ValueCell.tabIndex = "1";
                             break;
                     }
@@ -113,7 +108,7 @@ function createTable() {
                             break;
                         case 1:
                             var auxPowerInfoFunc = powerInfo.getCurrent();
-                            ValueCell.innerHTML = auxPowerInfoFunc();
+                            ValueCell.innerHTML = auxPowerInfoFunc;
                             ValueCell.tabIndex = "1";
                             break;
                     }
@@ -127,32 +122,75 @@ function updatePowerSourcerReadings()
 {
     var updatePwrSrc = document.getElementById("power_sourcer");
 
-    for (var i = 1; i != 9; i++)
+    for (var i = 0; i != 3; i++)
     {
-        var auxPowerInfoFunc = auxPowerInfo[0].getCurrent();
-        var current = Math.abs(auxPowerInfoFunc());
+        var auxPowerInfoFunc1 = powerInfo.getCurrent();
+        var auxPowerInfoFunc2 = powerInfo.getVoltage();
+        var auxPowerInfoFunc3 = powerInfo.getWireFeedSpeed();
+        var current = Math.abs(auxPowerInfoFunc1);
+        var voltage = Math.abs(auxPowerInfoFunc2);
+        var wireFeedSpeed = Math.abs(auxPowerInfoFunc3);
         
-        if(current > 3000 && current < 7000)
-        {
-            updatePwrSrc.rows[i].cells.item(1).style.backgroundColor = 'yellow';
-            updatePwrSrc.rows[i].cells.item(1).style.color = 'black';
-            updatePwrSrc.rows[i].cells.item(1).innerHTML = (current.toString()).bold();
-        }
-        else if (current > 7000)
-        {
-            updatePwrSrc.rows[i].cells.item(1).style.backgroundColor = 'red';
-            updatePwrSrc.rows[i].cells.item(1).style.color = 'black';
-            updatePwrSrc.rows[i].cells.item(1).innerHTML = (current.toString()).bold();
-        }
-        else
-        {
-            updatePwrSrc.rows[i].cells.item(1).style.backgroundColor = 'white';
-            updatePwrSrc.rows[i].cells.item(1).style.color = 'black';
-            updatePwrSrc.rows[i].cells.item(1).innerHTML = current;
+        switch (i) {
+            case 0:
+
+              // CORRENTE
+            if(current > 500 && current <= 1000)
+            {
+                updatePwrSrc.rows[i].cells.item(1).style.color = 'yellow';
+                updatePwrSrc.rows[i].cells.item(1).innerHTML = (current.toString()).bold();
+            }
+            else if (current > 1000)
+            {
+                updatePwrSrc.rows[i].cells.item(1).style.color = 'red';
+                updatePwrSrc.rows[i].cells.item(1).innerHTML = (current.toString()).bold();
+            }
+            else
+            {
+                updatePwrSrc.rows[i].cells.item(1).style.color = 'black';
+                updatePwrSrc.rows[i].cells.item(1).innerHTML = current;
+            }
+            break;  
+
+            case 1:
+
+            // TENSÃO
+            if(voltage > 500 && voltage <= 1000)
+            {
+                updatePwrSrc.rows[i].cells.item(1).style.color = 'yellow';
+                updatePwrSrc.rows[i].cells.item(1).innerHTML = (voltage.toString()).bold();
+            }
+            else if (voltage > 1000)
+            {
+                updatePwrSrc.rows[i].cells.item(1).style.color = 'red';
+                updatePwrSrc.rows[i].cells.item(1).innerHTML = (voltage.toString()).bold();
+            }
+            else
+            {
+                updatePwrSrc.rows[i].cells.item(1).style.color = 'black';
+                updatePwrSrc.rows[i].cells.item(1).innerHTML = voltage;
+            }
+            break;
+
+            case 2:
+
+            // VELOCIDADE DO ARAME
+            if(wireFeedSpeed > 500 && wireFeedSpeed <= 1000)
+            {
+                updatePwrSrc.rows[i].cells.item(1).style.color = 'yellow';
+                updatePwrSrc.rows[i].cells.item(1).innerHTML = (wireFeedSpeed.toString()).bold();
+            }
+            else if (wireFeedSpeed > 1000)
+            {
+                updatePwrSrc.rows[i].cells.item(1).style.color = 'red';
+                updatePwrSrc.rows[i].cells.item(1).innerHTML = (wireFeedSpeed.toString()).bold();
+            }
+            else
+            {
+                updatePwrSrc.rows[i].cells.item(1).style.color = 'black';
+                updatePwrSrc.rows[i].cells.item(1).innerHTML = wireFeedSpeed;
+            } 
+            break;
         }
     }
 }
-
-var dOut2 = [false, false, false];
-var dOut3 = [false, false, false];
-var dOut = [dOut2, dOut3];

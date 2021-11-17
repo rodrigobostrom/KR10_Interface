@@ -12,6 +12,7 @@
 
   <script type="text/javascript" src="Javascripts/Ros.js"></script>
   <script type="text/javascript" src="Javascripts/PowerSource.js"></script>
+  <script type="text/javascript" src="Javascripts/JointStates.js"></script>
   <script type="text/javascript" src="Javascripts/RvizTable.js"></script>
 
 </head>
@@ -29,7 +30,7 @@
     </div>
 
     <div class="sidenav">
-      <h1>Project Info</h1>
+      <h1>Graphics</h1>
     </div>
   
     <div class="sidenav">
@@ -43,11 +44,20 @@
     <div id="hello" class="data">
 
       <h1>Joint States</h1>
+      <table id="joint_state" cellspacing="4">
+        <th id="table_label">Juntas</th>
+        <th id="table_label">A1</th>
+        <th id="table_label">A2</th>
+        <th id="table_label">A3</th>
+        <th id="table_label">A4</th>
+        <th id="table_label">A5</th>
+        <th id="table_label">A6</th>
+      </table>
       <script>
-        //Teste com Hello World (talker.cpp)
-        subscribeHelloWorld();
+        createJointStateSubscriber();
+        generateJointStateTable();
+        setInterval(updateJointStateTable,300);
       </script>
-
     </div>
 
     <div class="data">
@@ -57,9 +67,8 @@
         <table id="power_sourcer" cellpadding="2" border="1"> </table>
       </div>
       <script>
-        createPowerSourcerSubscriber();
-        createTable();
-        setInterval(updatePowerSubscriber, 300);
+        createPwrSrcTable();
+        setInterval(updatePowerSourcerReadings, 300);
       </script>
 
     </div>
