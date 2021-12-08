@@ -28,6 +28,10 @@ class auxPowerInfo {
     }
 }
 
+function roundToTwo(num) {
+    return +(Math.round(num + "e+3")  + "e-3");
+}
+
 var powerInfo = new auxPowerInfo(current, voltage, wireFeedSpeed);
 
 var listener = new ROSLIB.Topic({
@@ -37,9 +41,9 @@ var listener = new ROSLIB.Topic({
 });
 
 listener.subscribe(function (message){
-        powerInfo.setCurrent(message.current);
-        powerInfo.setVoltage(message.voltage);
-        powerInfo.setWireFeedSpeed(message.wire_feed_speed);
+        powerInfo.setCurrent(roundToTwo(message.current));
+        powerInfo.setVoltage(roundToTwo(message.voltage));
+        powerInfo.setWireFeedSpeed(roundToTwo(message.wire_feed_speed));
 });
 
 console.log("Corrente: " + powerInfo.current + " Voltagem: " + powerInfo.voltage);

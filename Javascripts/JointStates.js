@@ -18,6 +18,10 @@ for (var i = 0; i != 8; i++)
     });
 }
 
+function roundToTwo(num) {
+    return +(Math.round(num + "e+3")  + "e-3");
+}
+
 function createJointStateSubscriber() 
 {
 		var jointStateListener = (new ROSLIB.Topic({
@@ -29,11 +33,9 @@ function createJointStateSubscriber()
 		jointStateListener.subscribe(
 			function (message)
 			{
-				aux = message.position.length;
-				console.log("Tamanho do array: " + aux);
 				for (var i = 0; i != 6; i++)
 				{
-					auxJointInfo[i].setPosition(message.position[i]);
+					auxJointInfo[i].setPosition(roundToTwo(message.position[i]));
 				}
 			}
 		);
@@ -71,7 +73,7 @@ function generateJointStateTable()
                     switch(numberCollumns)
 					{
 						case 0:
-							var rowName = "Position [rad]";
+							var rowName = "Position (rad)";
 							RowNameCell.innerHTML = rowName.bold();
 							break;
 						case 1:

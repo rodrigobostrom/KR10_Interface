@@ -1,84 +1,216 @@
 <!DOCTYPE html>
 <html>
 
-<head>
+  <head>
 
-  <meta charset="utf-8" />
+    <meta charset="utf-8" />
 
-  <link rel="stylesheet" type="text/css" href="Css/main.css">
+    <link rel="stylesheet" type="text/css" href="Css/main.css">
 
-  <script type="text/javascript" src="http://static.robotwebtools.org/EventEmitter2/current/eventemitter2.min.js"></script>
-  <script type="text/javascript" src="http://static.robotwebtools.org/roslibjs/current/roslib.min.js"></script>
+    <script type="text/javascript" src="http://static.robotwebtools.org/EventEmitter2/current/eventemitter2.min.js"></script>
+    <script type="text/javascript" src="http://static.robotwebtools.org/roslibjs/current/roslib.min.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.6.0/chart.min.js" integrity="sha512-GMGzUEevhWh8Tc/njS0bDpwgxdCJLQBWG3Z2Ct+JGOpVnEmjvNx6ts4v6A2XJf1HOrtOsfhv3hBKpK9kE5z8AQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.6.0/chart.js" integrity="sha512-CWVDkca3f3uAWgDNVzW+W4XJbiC3CH84P2aWZXj+DqI6PNbTzXbl1dIzEHeNJpYSn4B6U8miSZb/hCws7FnUZA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
+    <!-- <script src='/home/bostrom/Chart.js/dist'></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-  <script type="text/javascript" src="Javascripts/Ros.js"></script>
-  <script type="text/javascript" src="Javascripts/PowerSource.js"></script>
-  <script type="text/javascript" src="Javascripts/JointStates.js"></script>
-  <script type="text/javascript" src="Javascripts/RvizTable.js"></script>
+    <!-- JAVASCRIPT FILES -->
+    <script type="text/javascript" src="Javascripts/Ros.js"></script>
+    <script type="text/javascript" src="Javascripts/PowerSource.js"></script>
+    <script type="text/javascript" src="Javascripts/JointStates.js"></script>
+    <script type="text/javascript" src="Javascripts/RvizTable.js"></script>
+    <script type="text/javascript" src="Javascripts/RobotPosition.js"></script>
+    <script type="text/javascript" src="Javascripts/RobotOrientation.js"></script>
 
-</head>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.1/jquery.js"></script>
+    
+    <title>KUKA Robots</title>
+  </head>
 
-<body onload="init()">
-  <div class="container">
+  <body onload="init()">
+    <div class="container">
 
-    <div class="header">
-      <div id="kr10_label">
-        <h1>KR10 R1420</h1>
+      <div class="header">
+        <div id="kr10_label">
+          <h1>KR10 R1420</h1>
+        </div>
+        <div id="connection_state">
+          <input class ="connected_disconnected_image" id='connected_image' type="image" src="img/Disconnected.png" onclick="connect();" />
+        </div>
+
+        <script>
+          setInterval(updateConnectionImage, 300);
+        </script>
       </div>
-      <div id="connection_state">
-        <input id='connected_image' type="image" src="img/Disconnected.png" onclick="connect();" />
+
+      <div class="chart">
+        <h1>Graphics</h1>
+        <div class="chart-container">
+          <canvas id="chart_current"></canvas>
+          <script>
+            const ctx = document.getElementById('chart_current').getContext('2d');
+            const chartCurrent = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+                datasets: [{
+                    label: 'Arc Current',
+                    data: [12, 19, 3, 5, 2, 3],
+                    backgroundColor: 'rgba(255, 99, 132)',
+                    borderColor: 'rgba(255, 99, 132)',
+                    borderWidth: 1,
+                }],
+            },
+            options: {
+              animation: false,
+              layout: {
+                padding: {
+                    top: 20
+                }
+              },
+              scales: {
+                  y: {
+                    beginAtZero: true
+                  }
+              }
+            }
+          });
+        </script>
+        </div>
+
+        <div class="chart-container">
+          <canvas id="chart_voltage"></canvas>
+          <script>
+            const ctx2 = document.getElementById('chart_voltage').getContext('2d');
+            const chartVoltage = new Chart(ctx2, {
+            type: 'line',
+            data: {
+                labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+                datasets: [{
+                    label: 'Arc Voltage',
+                    data: [12, 19, 3, 5, 2, 3],
+                    backgroundColor: 'rgba(255, 99, 132)',
+                    borderColor: 'rgba(255, 99, 132)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+              layout: {
+                padding: {
+                    top: 80
+                }
+              },
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+          });
+        </script>
+        </div>
+
+        <div class="chart-container">
+          <canvas id="chart_wirefeed"></canvas>
+          <script>
+            const ctx3 = document.getElementById('chart_wirefeed').getContext('2d');
+            const chartWireFeed = new Chart(ctx3, {
+            type: 'line',
+            data: {
+                labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+                datasets: [{
+                    label: 'Wire Feed Speed',
+                    data: [12, 19, 3, 5, 2, 3],
+                    backgroundColor: 'rgba(255, 99, 132)',
+                    borderColor: 'rgba(255, 99, 132)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+              layout: {
+                padding: {
+                    top: 80
+                }
+              },
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+          });
+        </script>
+        </div>
       </div>
-    </div>
+    
+      <div class="robot_viz">
+        <h1>Robot Visualization</h1>
+        <div id="robot_viz_container">
+          <!-- Tela onde aparecerá o RVIZ do robô -->
+        </div>
+        <button type="button" id="rviz_button" onclick="startRobotViz()"><h3>Start RVIZ</h3></button>
 
-    <div class="sidenav">
-      <h1>Graphics</h1>
-    </div>
-  
-    <div class="sidenav">
-      <h1>Robot Visualization</h1>
-      <div id="robot_viz_container">
-        <!-- Tela onde aparecerá o RVIZ do robô -->
+        <div class='robot_pose'>
+          
+          <div class="pose_table">
+            <h2>Position</h2>
+            <table id="robot_position" cellpadding="2" border="1"> </table>
+          </div>
+          <script>
+            createPositionTable();
+            setInterval(updatePositionTable, 300);
+          </script>
+
+          <div class="pose_table">
+            <h2>Orientation (Quaternion)</h2>
+            <table id="robot_orientation" cellpadding="2" border="1"> </table>
+          </div>
+          <script>
+            createOrientationTable();
+            setInterval(updateOrientationTable, 300);
+          </script>
+        </div>
+
       </div>
-      <button type="button" id="rviz_button" onclick="startRobotViz()"><h3>Start RVIZ</h3></button>
-    </div>
 
-    <div id="hello" class="data">
+      <div id="hello" class="data">
 
-      <h1>Joint States</h1>
-      <table id="joint_state" cellspacing="4">
-        <th id="table_label">Juntas</th>
-        <th id="table_label">A1</th>
-        <th id="table_label">A2</th>
-        <th id="table_label">A3</th>
-        <th id="table_label">A4</th>
-        <th id="table_label">A5</th>
-        <th id="table_label">A6</th>
-      </table>
-      <script>
-        createJointStateSubscriber();
-        generateJointStateTable();
-        setInterval(updateJointStateTable,300);
-      </script>
-    </div>
-
-    <div class="data">
-
-      <h1>Power Sourcer Readings</h1>
-      <div id="robot_laser_table">
-        <table id="power_sourcer" cellpadding="2" border="1"> </table>
+        <h1>Joint States</h1>
+        <table id="joint_state" cellspacing="4">
+          <th id="table_label">Juntas</th>
+          <th id="table_label">A1</th>
+          <th id="table_label">A2</th>
+          <th id="table_label">A3</th>
+          <th id="table_label">A4</th>
+          <th id="table_label">A5</th>
+          <th id="table_label">A6</th>
+        </table>
+        <script>
+          createJointStateSubscriber();
+          generateJointStateTable();
+          setInterval(updateJointStateTable,300);
+        </script>
       </div>
-      <script>
-        createPwrSrcTable();
-        setInterval(updatePowerSourcerReadings, 300);
-      </script>
+
+      <div class="data">
+
+        <h1>Power Sourcer Readings</h1>
+        <div id="robot_laser_table">
+          <table id="power_sourcer" cellpadding="2" border="1"> </table>
+        </div>
+        <script>
+          createPwrSrcTable();
+          setInterval(updatePowerSourcerReadings, 300);
+        </script>
+
+      </div>
+
+      <div class='footer'>
+        <h3 id="texto_footer">Desenvolvido no LEAD - Laboratório de Controle e Automação, Engenharia de Aplicação e Desenvolvimento - UFRJ</h3>
+      </div>
 
     </div>
 
-    <div class='footer'>
-      <h1>Footer</h1>
-    </div>
-
-  </div>
-
-</body>
+  </body>
 
 </html>
