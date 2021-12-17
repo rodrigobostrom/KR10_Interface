@@ -9,25 +9,30 @@
 
     <script type="text/javascript" src="http://static.robotwebtools.org/EventEmitter2/current/eventemitter2.min.js"></script>
     <script type="text/javascript" src="http://static.robotwebtools.org/roslibjs/current/roslib.min.js"></script>
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.6.0/chart.min.js" integrity="sha512-GMGzUEevhWh8Tc/njS0bDpwgxdCJLQBWG3Z2Ct+JGOpVnEmjvNx6ts4v6A2XJf1HOrtOsfhv3hBKpK9kE5z8AQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.6.0/chart.js" integrity="sha512-CWVDkca3f3uAWgDNVzW+W4XJbiC3CH84P2aWZXj+DqI6PNbTzXbl1dIzEHeNJpYSn4B6U8miSZb/hCws7FnUZA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
-    <!-- <script src='/home/bostrom/Chart.js/dist'></script> -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <!-- JAVASCRIPT FILES -->
+    <script type="text/javascript" src="Javascripts/ConnectionState.js"></script>
     <script type="text/javascript" src="Javascripts/Ros.js"></script>
     <script type="text/javascript" src="Javascripts/PowerSource.js"></script>
     <script type="text/javascript" src="Javascripts/JointStates.js"></script>
     <script type="text/javascript" src="Javascripts/RvizTable.js"></script>
     <script type="text/javascript" src="Javascripts/RobotPosition.js"></script>
     <script type="text/javascript" src="Javascripts/RobotOrientation.js"></script>
+    <script type="text/javascript" src="Javascripts/Graph.js"></script>
+
+    <script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.1/jquery.js"></script>
-    
+
     <title>KUKA Robots</title>
+
   </head>
 
-  <body onload="init()">
+  <body>
+    <script>
+      init();
+    </script>
     <div class="container">
 
       <div class="header">
@@ -44,103 +49,9 @@
       </div>
 
       <div class="chart">
-        <h1>Graphics</h1>
-        <div class="chart-container">
-          <canvas id="chart_current"></canvas>
-          <script>
-            const ctx = document.getElementById('chart_current').getContext('2d');
-            const chartCurrent = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-                datasets: [{
-                    label: 'Arc Current',
-                    data: [12, 19, 3, 5, 2, 3],
-                    backgroundColor: 'rgba(255, 99, 132)',
-                    borderColor: 'rgba(255, 99, 132)',
-                    borderWidth: 1,
-                }],
-            },
-            options: {
-              animation: false,
-              layout: {
-                padding: {
-                    top: 20
-                }
-              },
-              scales: {
-                  y: {
-                    beginAtZero: true
-                  }
-              }
-            }
-          });
-        </script>
-        </div>
-
-        <div class="chart-container">
-          <canvas id="chart_voltage"></canvas>
-          <script>
-            const ctx2 = document.getElementById('chart_voltage').getContext('2d');
-            const chartVoltage = new Chart(ctx2, {
-            type: 'line',
-            data: {
-                labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-                datasets: [{
-                    label: 'Arc Voltage',
-                    data: [12, 19, 3, 5, 2, 3],
-                    backgroundColor: 'rgba(255, 99, 132)',
-                    borderColor: 'rgba(255, 99, 132)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-              layout: {
-                padding: {
-                    top: 80
-                }
-              },
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-          });
-        </script>
-        </div>
-
-        <div class="chart-container">
-          <canvas id="chart_wirefeed"></canvas>
-          <script>
-            const ctx3 = document.getElementById('chart_wirefeed').getContext('2d');
-            const chartWireFeed = new Chart(ctx3, {
-            type: 'line',
-            data: {
-                labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-                datasets: [{
-                    label: 'Wire Feed Speed',
-                    data: [12, 19, 3, 5, 2, 3],
-                    backgroundColor: 'rgba(255, 99, 132)',
-                    borderColor: 'rgba(255, 99, 132)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-              layout: {
-                padding: {
-                    top: 80
-                }
-              },
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-          });
-        </script>
-        </div>
+        <div id="chartCurrent" style="height: 30%; width: 90%;"></div>
+        <div id="chartVoltage" style="height: 30%; width: 90%; margin-top: 50px;"></div>
+        <div id="chartWireFeed" style="height: 30%; width: 90%; margin-top: 50px;"></div>
       </div>
     
       <div class="robot_viz">
@@ -173,7 +84,7 @@
 
       </div>
 
-      <div id="hello" class="data">
+      <div class="data">
 
         <h1>Joint States</h1>
         <table id="joint_state" cellspacing="4">

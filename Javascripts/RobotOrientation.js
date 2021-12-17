@@ -55,7 +55,7 @@ listener.subscribe(function (message){
         robotOrientation.setOrientationW(message.pose.orientation.w);
 });
 
-console.log("X: " + robotOrientation.x + " Y: " + robotOrientation.y + " Z: " + robotOrientation.z + " W: " + robotOrientation.w);
+// console.log("X: " + robotOrientation.x + " Y: " + robotOrientation.y + " Z: " + robotOrientation.z + " W: " + robotOrientation.w);
 
 function createOrientationTable() {
 
@@ -166,19 +166,19 @@ function updateOrientationTable()
         switch(i) {
             case 0:
                 updateOrientation.rows[i].cells.item(1).innerHTML = x;
-                console.log("Orientação X = " + x);
+                //console.log("Orientação X = " + x);
                 break;
             case 1:
                 updateOrientation.rows[i].cells.item(1).innerHTML = y;
-                console.log("Orientação Y = " + y);
+                //console.log("Orientação Y = " + y);
                 break;
             case 2:
                 updateOrientation.rows[i].cells.item(1).innerHTML = z;
-                console.log("Orientação Z = " + z);
+                //console.log("Orientação Z = " + z);
                 break;
             case 3:
                 updateOrientation.rows[i].cells.item(1).innerHTML = w;
-                console.log("Orientação W = " + w);
+                //console.log("Orientação W = " + w);
                 break; 
         }
 	}
