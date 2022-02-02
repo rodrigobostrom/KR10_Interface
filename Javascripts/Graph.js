@@ -21,7 +21,7 @@ window.onload = function () {
             title: "Arc Current (A)"
         },
         data: [{
-            type: "line",
+            type: "spline",
             dataPoints : dps1
         }]
     });
@@ -42,7 +42,7 @@ window.onload = function () {
             title: "Arc Voltage (V)"
         },
         data: [{
-            type: "line",
+            type: "spline",
             dataPoints : dps2
         }]
     });
@@ -63,17 +63,19 @@ window.onload = function () {
             title: "Wire Feed Speed (mm/s)"
         },
         data: [{
-            type: "line",
+            type: "spline",
             dataPoints : dps3
         }]
     });
 
     chart3.render();
 
-    var xVal = dps1.length + 0.5;
+    var xVal1 = dps1.length;
+    var xVal2 = dps2.length;
+    var xVal3 = dps3.length;
     yVal = [0, 0, 0];
     
-    var updateInterval = 500;
+    var updateInterval = 1000;
 
     var updateChart = function updateChart() {
 
@@ -83,31 +85,34 @@ window.onload = function () {
             switch (i){
                 case 0:
                     yVal[i] = powerInfo.getCurrent();
-                    dps1.push({x: xVal,y: yVal[i]});
-                    xVal++;
+                    dps1.push({x: xVal1,y: yVal[i]});
+                    xVal1++;
                     break;
                 case 1:
                     yVal[i] = powerInfo.getVoltage();
-                    dps2.push({x: xVal,y: yVal[i]});
-                    xVal++;
+                    dps2.push({x: xVal2,y: yVal[i]});
+                    xVal2++;
                     break;
                 case 2:
                     yVal[i] = powerInfo.getWireFeedSpeed();
-                    dps3.push({x: xVal,y: yVal[i]});
-                    xVal++;
+                    dps3.push({x: xVal3,y: yVal[i]});
+                    xVal3++;
                     break;
             }
 
         }
         
-        if (dps1.length > 10 )
-        {
-            dps1.shift();
-            dps2.shift();
-            dps3.shift();				
-        }
+        if (dps1.length > 10 ){
+            if (dps2.length > 10 ){
+                if (dps3.length > 10 ){
+                    dps1.shift();
+                    dps2.shift();
+                    dps3.shift();
+                }
+            }
+        }			
 
-        console.log("Xval = " + xVal + ", Yval = " + yVal);
+        console.log("Xval = " + xVal1 + ", Yval = " + yVal);
         chart1.render();
         chart2.render();
         chart3.render();		

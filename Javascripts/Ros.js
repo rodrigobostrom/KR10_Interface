@@ -7,7 +7,7 @@ var ros = new ROSLIB.Ros({
 
 function init() {
   var ros = new ROSLIB.Ros({
-    url : 'ws://localhost:9090'
+    url : 'ws://http://127.0.0.1:9090'
   });
 
   // Adds a listener for a connection event to the ros object.
@@ -20,7 +20,7 @@ function init() {
 function connect() {
   if (!connectState) {
     ros = new ROSLIB.Ros({
-        url: 'ws://172.16.11.27:9090/'
+        url: 'ws://127.0.0.1:9090/'
     });
 
     ros.on('connection', function() {

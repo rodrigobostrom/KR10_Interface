@@ -1,5 +1,6 @@
 var jointStateListener = [];
 auxJointInfo = [];
+var pi = 3.14159;
 
 for (var i = 0; i != 8; i++)
 {   
@@ -35,7 +36,8 @@ function createJointStateSubscriber()
 			{
 				for (var i = 0; i != 6; i++)
 				{
-					auxJointInfo[i].setPosition(roundToTwo(message.position[i]));
+					var aux = (message.position[i])*(180/Math.PI);
+					auxJointInfo[i].setPosition(Math.round(aux));
 				}
 			}
 		);
@@ -73,7 +75,7 @@ function generateJointStateTable()
                     switch(numberCollumns)
 					{
 						case 0:
-							var rowName = "Position (rad)";
+							var rowName = "Position (º)";
 							RowNameCell.innerHTML = rowName.bold();
 							break;
 						case 1:

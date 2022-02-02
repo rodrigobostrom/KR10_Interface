@@ -1,10 +1,13 @@
 var robotViz = false;
-connectState = true;
+// var connectState = true;
 
 function startRobotViz()
 {
+    console.log("Start RVIZ Button");
+
     if (!robotViz && connectState)
     {
+        console.log("Entrou no IF");
         robotViz = true;
 
         var initPos = {
@@ -13,19 +16,22 @@ function startRobotViz()
             z : 1.50
         };
 
-        // var urdfPath = "http://" + localHost + "/RosiWebGUI";
-        var urdfPath = "http://172.16.11.27";
+        // var urdfPath = "http://" + localHost + "/KR10";
+        var urdfPath = "http://127.0.0.1";
 
         // Create the main viewer.
         var viewer = new ROS3D.Viewer({
             divID : "robot_viz_container",
-            width : 400,
-            height : 400,
+            width : 600,
+            height : 600,
             antialias : true,
             intensity : 0.05,
-            background : '#f8f8ff',
+            // background : '#f8f8ff',
+            background : '#363636',
             cameraPose : initPos
         });
+
+        console.log(viewer);
 
         // Add a grid.
         viewer.addObject(new ROS3D.Grid());
@@ -36,13 +42,13 @@ function startRobotViz()
             angularThres : 0.01,
             transThres : 0.01,
             rate : 10.0,
-            fixedFrame : '/rosi_base_link'
+            fixedFrame : '/kr10_base_link'
         });
 
         var urdfClient = new ROS3D.UrdfClient({
             ros : ros,
             tfClient : tfClient,
-            param: 'rosi/robot_description',
+            param: '/robot_description',
             path : urdfPath,
             rootObject : viewer.scene,
             loader : ROS3D.COLLADA_LOADER_2

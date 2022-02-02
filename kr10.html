@@ -7,9 +7,20 @@
 
     <link rel="stylesheet" type="text/css" href="Css/main.css">
 
-    <script type="text/javascript" src="http://static.robotwebtools.org/EventEmitter2/current/eventemitter2.min.js"></script>
-    <script type="text/javascript" src="http://static.robotwebtools.org/roslibjs/current/roslib.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>KUKA Robots</title>
+
+    <!-- LIBRARIES -->
+    
+    <script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.1/jquery.js"></script>
+
+    <!-- IMPORTED JAVASCRIPT FOR ROS CONNECTION -->
+    <script type="text/javascript" src="Javascripts/eventemitter2.min.js"></script>
+    <script type="text/javascript" src="Javascripts/roslib.min.js"></script>
+    <script type="text/javascript" src="Javascripts/three.min.js"></script>
+    <script type="text/javascript" src="Javascripts/ColladaLoader.js"></script>
+    <script type="text/javascript" src="Javascripts/STLLoader.js"></script>
+    <script type="text/javascript" src="Javascripts/ros3d.js"></script>
 
     <!-- JAVASCRIPT FILES -->
     <script type="text/javascript" src="Javascripts/ConnectionState.js"></script>
@@ -21,12 +32,6 @@
     <script type="text/javascript" src="Javascripts/RobotOrientation.js"></script>
     <script type="text/javascript" src="Javascripts/Graph.js"></script>
 
-    <script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
-
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.1/jquery.js"></script>
-
-    <title>KUKA Robots</title>
-
   </head>
 
   <body>
@@ -37,7 +42,7 @@
 
       <div class="header">
         <div id="kr10_label">
-          <h1>KR10 R1420</h1>
+          <h1>iWAAM</h1>
         </div>
         <div id="connection_state">
           <input class ="connected_disconnected_image" id='connected_image' type="image" src="img/Disconnected.png" onclick="connect();" />

@@ -52,7 +52,7 @@ listener.subscribe(function (message){
         robotOrientation.setOrientationX(roundToTwo(message.pose.orientation.x));
         robotOrientation.setOrientationY(roundToTwo(message.pose.orientation.y));
         robotOrientation.setOrientationZ(roundToTwo(message.pose.orientation.z));
-        robotOrientation.setOrientationW(message.pose.orientation.w);
+        robotOrientation.setOrientationW(roundToTwo(message.pose.orientation.w));
 });
 
 // console.log("X: " + robotOrientation.x + " Y: " + robotOrientation.y + " Z: " + robotOrientation.z + " W: " + robotOrientation.w);

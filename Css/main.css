@@ -158,9 +158,10 @@ table {
 
 #joint_state {
     margin-top: 50px;
+    font-size: 40px;
     color: #111;
-    width: 1000px;
-    height: 200px;
+    width: 90%;
+    height: 40%;
     position: relative;
     align-content: center;
 }
@@ -178,6 +179,12 @@ table {
     margin-top: 50px;
 }
 
+#power_sourcer {
+    font-size: 40px;
+    width: 60%;
+    height: 40%;
+}
+
 #robot_laser_table {
     float: left;
     position: relative;
@@ -188,6 +195,7 @@ table {
 
 #robot_position, #robot_orientation {
     margin-top: 50px;
+    font-size: 40px;
 }
 
 #robot_viz_container {
@@ -197,7 +205,7 @@ table {
     position: relative;
     top: 50px;
     left: 300px;
-    background-color: black;
+    /* background-color: black; */
 }
 
 #rviz_button {

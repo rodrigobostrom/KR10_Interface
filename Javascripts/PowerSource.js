@@ -61,9 +61,9 @@ function createPwrSrcTable() {
         var NameCell = row.insertCell(0);
         var ValueCell = row.insertCell(1);
 
-        NameCell.width = "200px";
-
-        ValueCell.width = "120px";
+        NameCell.width = "500px";
+        
+        ValueCell.width = "500px";
 
         for (var numberCollumns = 0; numberCollumns < 2; numberCollumns++) {
             switch (numberRows) {

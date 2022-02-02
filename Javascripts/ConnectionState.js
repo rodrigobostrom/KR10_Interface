@@ -1,5 +1,5 @@
 //Declaring connection variables
-var connectState = false;
+var connectState = true;
 var ros = new ROSLIB.Ros({});
 var localHost;
 
@@ -9,7 +9,7 @@ function connect()
 {
     if (!connectState)
     {
-        this.localHost = prompt("Enter the ip adress of the websocket:", "172.16.11.27");
+        this.localHost = prompt("Enter the ip adress of the websocket:", "localhost");
         this.rosUrl = "ws://" + this.localHost + ":9090/";
         ros.connect(rosUrl);
     }
