@@ -34,7 +34,7 @@ function createJointStateSubscriber()
 		jointStateListener.subscribe(
 			function (message)
 			{
-				for (var i = 0; i != 6; i++)
+				for (var i = 0; i != 8; i++)
 				{
 					var aux = (message.position[i])*(180/Math.PI);
 					auxJointInfo[i].setPosition(Math.round(aux));
@@ -63,8 +63,10 @@ function generateJointStateTable()
 		var A4Cell = row.insertCell(4);
 		var A5Cell = row.insertCell(5);
 		var A6Cell = row.insertCell(6);
+		var A7Cell = row.insertCell(7);
+		var A8Cell = row.insertCell(8);
 
-		for(var numberCollumns = 0; numberCollumns < 7; numberCollumns++)
+		for(var numberCollumns = 0; numberCollumns < 9; numberCollumns++)
 		{
 			switch(numberRows)
 			{
@@ -102,6 +104,14 @@ function generateJointStateTable()
 							var auxJointInfoFunc = auxJointInfo[5].getPosition();
 							A6Cell.innerHTML = auxJointInfoFunc;
 							break;
+						case 7:
+							var auxJointInfoFunc = auxJointInfo[6].getPosition();
+							A7Cell.innerHTML = auxJointInfoFunc;
+							break;
+						case 8:
+							var auxJointInfoFunc = auxJointInfo[7].getPosition();
+							A8Cell.innerHTML = auxJointInfoFunc;
+							break;
 						default:
 					}
 					break;
@@ -115,7 +125,7 @@ function updateJointStateTable()
 {
 	var updateJointTable = document.getElementById("joint_state");
 	
-	for (var i = 0; i != 6; i++)
+	for (var i = 0; i != 8; i++)
 	{
 		var auxJointInfoFunc = auxJointInfo[i].getPosition();
         var position = Math.abs(auxJointInfoFunc);

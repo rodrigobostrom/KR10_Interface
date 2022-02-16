@@ -1,62 +1,83 @@
-var x = 0;
+var r = 0;
+var p = 0;
 var y = 0;
-var z = 0;
-var w = 0;
+
+// var x = 0;
+// var y = 0;
+// var z = 0;
+// var w = 0;
 
 class auxRobotOrientation {
-    constructor (x, y, z, w){
-        this.x = x;
+    constructor (r, p, y){
+        this.r = r;
+        this.p = p;
         this.y = y;
-        this.z = z;
-        this.w = w;
     }
-    setOrientationX(i) {
-        this.x = i;
+
+    setOrientationR(q0,q1,q2,q3) {
+        this.r = (180/Math.PI)*(Math.atan2(2*(q0*q1+q2*q3),1-2*(Math.pow(q1,2)+Math.pow(q2,2))));
     }
-    setOrientationY(i) {
-        this.y = i;
+    setOrientationP(q0,q1,q2,q3) {
+        this.p = (180/Math.PI)*(Math.asin(2*(q0*q2-q3*q1)));
     }
-    setOrientationZ(i) {
-        this.z = i;
+    setOrientationY(q0,q1,q2,q3) {
+        this.y = (180/Math.PI)*(Math.atan2(2*(q0*q3+q1*q2),1-2*(Math.pow(q2,2)+Math.pow(q3,2))));
     }
-    setOrientationW(i) {
-        this.w = i;
+    getOrientationR() {
+        return roundToTwo(this.r);
     }
-    getOrientationX() {
-        return this.x;
+    getOrientationP() {
+        return roundToTwo(this.p);
     }
     getOrientationY() {
-        return this.y;
-    }
-    getOrientationZ() {
-        return this.z;
-    }
-    getOrientationW() {
-        return this.w;
+        return roundToTwo(this.y);
     }
 }
 
 function roundToTwo(num) {
-    return +(Math.round(num + "e+3")  + "e-3");
+    return +(Math.round(num + "e+2")  + "e-2");
 }
 
-var robotOrientation = new auxRobotOrientation(x, y, z, w);
+var robotOrientation = new auxRobotOrientation(r, p, y);
 
+// Listener do KR10
 var listener = new ROSLIB.Topic({
     ros : ros,
     name : '/kr10/endpoint_state',
     messageType : 'geometry_msgs/PoseStamped'
 });
-
-listener.subscribe(function (message){
-        robotOrientation.setOrientationX(roundToTwo(message.pose.orientation.x));
-        robotOrientation.setOrientationY(roundToTwo(message.pose.orientation.y));
-        robotOrientation.setOrientationZ(roundToTwo(message.pose.orientation.z));
-        robotOrientation.setOrientationW(roundToTwo(message.pose.orientation.w));
+// Listener do KR90
+var listener_kr90 = new ROSLIB.Topic({
+    ros : ros,
+    name : '/kr90/endpoint_state',
+    messageType : 'geometry_msgs/PoseStamped'
 });
 
-// console.log("X: " + robotOrientation.x + " Y: " + robotOrientation.y + " Z: " + robotOrientation.z + " W: " + robotOrientation.w);
+listener.subscribe(function (message){
 
+    q0 = message.pose.orientation.w;
+    q1 = message.pose.orientation.x;
+    q2 = message.pose.orientation.y;
+    q3 = message.pose.orientation.z;
+
+    robotOrientation.setOrientationR(q0,q1,q2,q3);
+    robotOrientation.setOrientationP(q0,q1,q2,q3);
+    robotOrientation.setOrientationY(q0,q1,q2,q3);
+
+});
+
+listener_kr90.subscribe(function (message){
+
+    q0 = message.pose.orientation.w;
+    q1 = message.pose.orientation.x;
+    q2 = message.pose.orientation.y;
+    q3 = message.pose.orientation.z;
+
+    robotOrientation.setOrientationR(q0,q1,q2,q3);
+    robotOrientation.setOrientationP(q0,q1,q2,q3);
+    robotOrientation.setOrientationY(q0,q1,q2,q3);
+
+});
 function createOrientationTable() {
 
     var orientationTable = document.getElementById("robot_orientation");
@@ -82,11 +103,11 @@ function createOrientationTable() {
 
                     switch (numberCollumns) {
                         case 0:
-                            var rowName = "X";
+                            var rowName = "R";
                             NameCell.innerHTML = rowName.bold();
                             break;
                         case 1:
-                            var auxRobotInfoFunc = robotOrientation.getOrientationX();
+                            var auxRobotInfoFunc = robotOrientation.getOrientationR();
                             ValueCell.innerHTML = auxRobotInfoFunc;
                             ValueCell.tabIndex = "1";
                             break;
@@ -96,6 +117,23 @@ function createOrientationTable() {
                 case 1:
 
                     row.className = "table_odd_row";
+
+                    switch (numberCollumns) {
+                        case 0:
+                            var rowName = "P";
+                            NameCell.innerHTML = rowName.bold();
+                            break;
+                        case 1:
+                            var auxRobotInfoFunc = robotOrientation.getOrientationP();
+                            ValueCell.innerHTML = auxRobotInfoFunc;
+                            ValueCell.tabIndex = "1";
+                            break;
+                    }
+                    break;
+
+                case 2:
+
+                    row.className = "table_even_row";
 
                     switch (numberCollumns) {
                         case 0:
@@ -109,40 +147,6 @@ function createOrientationTable() {
                             break;
                     }
                     break;
-
-                case 2:
-
-                    row.className = "table_even_row";
-
-                    switch (numberCollumns) {
-                        case 0:
-                            var rowName = "Z";
-                            NameCell.innerHTML = rowName.bold();
-                            break;
-                        case 1:
-                            var auxRobotInfoFunc = robotOrientation.getOrientationZ();
-                            ValueCell.innerHTML = auxRobotInfoFunc;
-                            ValueCell.tabIndex = "1";
-                            break;
-                    }
-                    break;
-                case 3:
-
-                    row.className = "table_odd_row";
-
-                    switch (numberCollumns) {
-                        case 0:
-                            var rowName = "W";
-                            NameCell.innerHTML = rowName.bold();
-                            break;
-                        case 1:
-                            var auxRobotInfoFunc = robotOrientation.getOrientationW();
-                            ValueCell.innerHTML = auxRobotInfoFunc;
-                            ValueCell.tabIndex = "1";
-                            break;
-                    }
-                    break;
-    
             }
         }
     }
@@ -154,32 +158,26 @@ function updateOrientationTable()
 	
 	for (var i = 0; i != 4; i++)
 	{
-		var auxRobotInfoFunc1 = robotOrientation.getOrientationX();
-        var auxRobotInfoFunc2 = robotOrientation.getOrientationY();
-        var auxRobotInfoFunc3 = robotOrientation.getOrientationZ();
-        var auxRobotInfoFunc4 = robotOrientation.getOrientationW();
-        var x = Math.abs(auxRobotInfoFunc1);
-        var y = Math.abs(auxRobotInfoFunc2);
-        var z = Math.abs(auxRobotInfoFunc3);
-        var w = Math.abs(auxRobotInfoFunc4);
+		var auxRobotInfoFunc1 = robotOrientation.getOrientationR();
+        var auxRobotInfoFunc2 = robotOrientation.getOrientationP();
+        var auxRobotInfoFunc3 = robotOrientation.getOrientationY();
+        var r = Math.abs(auxRobotInfoFunc1);
+        var p = Math.abs(auxRobotInfoFunc2);
+        var y = Math.abs(auxRobotInfoFunc3);
 
         switch(i) {
             case 0:
-                updateOrientation.rows[i].cells.item(1).innerHTML = x;
+                updateOrientation.rows[i].cells.item(1).innerHTML = r;
                 //console.log("Orientação X = " + x);
                 break;
             case 1:
-                updateOrientation.rows[i].cells.item(1).innerHTML = y;
+                updateOrientation.rows[i].cells.item(1).innerHTML = p;
                 //console.log("Orientação Y = " + y);
                 break;
             case 2:
-                updateOrientation.rows[i].cells.item(1).innerHTML = z;
+                updateOrientation.rows[i].cells.item(1).innerHTML = y;
                 //console.log("Orientação Z = " + z);
                 break;
-            case 3:
-                updateOrientation.rows[i].cells.item(1).innerHTML = w;
-                //console.log("Orientação W = " + w);
-                break; 
-        }
-	}
+	    }
+    }
 }

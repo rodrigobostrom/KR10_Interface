@@ -36,10 +36,22 @@ var listener = new ROSLIB.Topic({
     messageType : 'geometry_msgs/PoseStamped'
 });
 
+var listener_kr90 = new ROSLIB.Topic({
+    ros : ros,
+    name : '/kr90/endpoint_state',
+    messageType : 'geometry_msgs/PoseStamped'
+});
+
 listener.subscribe(function (message){
         robotPosition.setPositionX(roundToTwo(message.pose.position.x));
         robotPosition.setPositionY(roundToTwo(message.pose.position.y));
         robotPosition.setPositionZ(roundToTwo(message.pose.position.z));
+});
+
+listener_kr90.subscribe(function (message){
+    robotPosition.setPositionX(roundToTwo(message.pose.position.x));
+    robotPosition.setPositionY(roundToTwo(message.pose.position.y));
+    robotPosition.setPositionZ(roundToTwo(message.pose.position.z));
 });
 
 console.log("X: " + robotPosition.x + " Y: " + robotPosition.y + " Z: " + robotPosition.z);

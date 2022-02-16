@@ -10,6 +10,7 @@ window.onload = function () {
     var chart1 = new CanvasJS.Chart("chartCurrent",{
         animationEnabled: true,
         backgroundColor: "#F5DEB3",
+        borderWidth: 2,
         lineColor: "black",
         title :{
             text: "Arc Current"

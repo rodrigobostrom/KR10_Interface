@@ -3,8 +3,22 @@
     padding: 0;
 }
 
+:root {
+    --cor-primaria-success: rgb(75, 200, 138);
+    --cor-hover-success: rgb(116, 158, 137);
+    --cor-secundaria-success: rgb(27, 66, 50);
+    
+    --cor-primaria-info: rgb(61, 157, 246);
+    --cor-hover-info: rgb(116, 134, 158);
+    --cor-secundaria-info: rgb(31, 62, 88);
+
+    --cor-primaria-danger: rgb(200, 75, 75);
+    --cor-hover-danger: rgb(158, 116, 116);
+    --cor-secundaria-danger: rgb(58, 22, 22);
+}
+
 body {
-    width: 100vw;
+    width: 100vh;
     height: 100%;
     background: black;
     color: #fff;
@@ -93,12 +107,12 @@ th {
     margin-top: 30px;
 }
 
-.robot_pose{
+.robot_pose {
     margin-top: 30px;
     color: black;
 }
 
-.robot_viz{
+.robot_viz {
     grid-row-start: 2;
     grid-row-end: 4;
     background-color: #F5DEB3;
@@ -135,6 +149,10 @@ table {
     vertical-align: middle;
 }
 
+.visual_button{
+    color: blue;
+}
+
 #kr10_label {
     flex: 0.1 0.1 auto;
     float: left;
@@ -160,7 +178,7 @@ table {
     margin-top: 50px;
     font-size: 40px;
     color: #111;
-    width: 90%;
+    width: 80%;
     height: 40%;
     position: relative;
     align-content: center;
@@ -177,6 +195,25 @@ table {
 
 #kp2_title {
     margin-top: 50px;
+}
+
+#kr10_button{
+    background-color: #F4A460;
+    height: 40px;
+    width: 100px;
+    border: 1px solid black;
+}
+
+#kr90_button{
+    background-color: #F5DEB3;
+    height: 40px;
+    width: 100px;
+    border: 1px solid black;
+}
+
+#observacao{
+    margin-top: 40px;
+    color: black;
 }
 
 #power_sourcer {
@@ -208,10 +245,11 @@ table {
     /* background-color: black; */
 }
 
-#rviz_button {
+#rviz_button, #rviz_button2 {
     margin-top: 100px;
     height: 40px;
     width: 100px;
+    /* border: 1px solid #FF8C00; */
 }
 
 #texto_footer {

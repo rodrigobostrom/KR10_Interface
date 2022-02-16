@@ -5,12 +5,14 @@
 
     <meta charset="utf-8" />
 
+    <link rel="shortcut icon" href="">
+
     <link rel="stylesheet" type="text/css" href="Css/main.css">
 
-    <title>KUKA Robots</title>
+    <title>iWAAM</title>
 
     <!-- LIBRARIES -->
-    
+
     <script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.1/jquery.js"></script>
 
@@ -32,12 +34,41 @@
     <script type="text/javascript" src="Javascripts/RobotOrientation.js"></script>
     <script type="text/javascript" src="Javascripts/Graph.js"></script>
 
+    <style>
+      body {
+        width: 100vh;
+        height: 100%;
+        background: black;
+        color: #fff;
+      }
+      
+      #joint_state {
+        margin-top: 50px;
+        font-size: 40px;
+        color: #111;
+        width: 80%;
+        height: 40%;
+        position: relative;
+        align-content: center;
+      }
+
+      #robot_position, #robot_orientation {
+        margin-top: 50px;
+        font-size: 40px;
+      }
+
+      #power_sourcer {
+        font-size: 40px;
+        width: 60%;
+        height: 40%;
+      }
+    </style>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
   </head>
 
   <body>
-    <script>
-      init();
-    </script>
     <div class="container">
 
       <div class="header">
@@ -64,13 +95,17 @@
         <div id="robot_viz_container">
           <!-- Tela onde aparecerá o RVIZ do robô -->
         </div>
-        <button type="button" id="rviz_button" onclick="startRobotViz()"><h3>Start RVIZ</h3></button>
+        <div class="visual_button">
+          <button type="button" id="rviz_button" onclick=startKR10()><h2>KR10</h2></button>
+          <button type="button" id="rviz_button2" onclick=startKR90()><h2>KR90</h2></button>
+        </div>
+        
 
         <div class='robot_pose'>
-          
+        
           <div class="pose_table">
-            <h2>Position</h2>
-            <table id="robot_position" cellpadding="2" border="1"> </table>
+            <h2>Position (m)</h2>
+            <table id="robot_position" cellpadding="2" border='1'> </table>
           </div>
           <script>
             createPositionTable();
@@ -78,8 +113,8 @@
           </script>
 
           <div class="pose_table">
-            <h2>Orientation (Quaternion)</h2>
-            <table id="robot_orientation" cellpadding="2" border="1"> </table>
+            <h2>Orientation (RPY in º)</h2>
+            <table id="robot_orientation" cellpadding="2" border='1'> </table>
           </div>
           <script>
             createOrientationTable();
@@ -92,7 +127,7 @@
       <div class="data">
 
         <h1>Joint States</h1>
-        <table id="joint_state" cellspacing="4">
+        <table id="joint_state" cellspacing="4" border='1'>
           <th id="table_label">Juntas</th>
           <th id="table_label">A1</th>
           <th id="table_label">A2</th>
@@ -100,7 +135,10 @@
           <th id="table_label">A4</th>
           <th id="table_label">A5</th>
           <th id="table_label">A6</th>
+          <th id="table_label">E1*</th>
+          <th id="table_label">E2*</th>
         </table>
+        <h2 id="observacao">* Referentes a mesa Kuka KP2</h2>
         <script>
           createJointStateSubscriber();
           generateJointStateTable();
@@ -112,7 +150,7 @@
 
         <h1>Power Sourcer Readings</h1>
         <div id="robot_laser_table">
-          <table id="power_sourcer" cellpadding="2" border="1"> </table>
+          <table id="power_sourcer" cellpadding="2" border='1'> </table>
         </div>
         <script>
           createPwrSrcTable();
